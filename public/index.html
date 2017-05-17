@@ -1,0 +1,193 @@
+<!doctype html>
+<!-- Declares meanMapApp as the starting Angular module -->
+<html class="no-js" ng-app="meanMapApp">  
+<head>
+   <!--  <meta name="description" content="An example demonstrating Google Map integration with MEAN Apps">
+    <meta name="viewport" content="width=device-width, initial-scale=1"> -->
+    <!-- CSS -->
+    <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.css"/>
+    <link rel="stylesheet" href="style.css"/>
+    <!-- Css -->
+    <link rel="stylesheet" href="css/core.min2.css" />
+    <link rel="stylesheet" href="css/skin.css" />
+  <!-- Font -->
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700%7CRoboto:300,400,500,700' rel='stylesheet' type='text/css'>
+     <meta charset="UTF-8" />
+    <meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0" name="viewport">
+    <meta name="twitter:widgets:theme" content="light">
+    <meta property="og:title" content="Hotshot Sports" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="Your-Image-Url" />
+    <meta property="og:description" content="At Hotshot, we change perceptions by building a sports ecosystem for the people." />
+    <title>Hotshot | Sports</title>
+    <link rel="shortcut icon" type="image/x-icon" href="images/logoalt.png">
+    <!-- Google Maps API -->
+    <script src="https://maps.googleapis.com/maps/api/js?key= AIzaSyDr9VR7cBIaJeQzV-QpgTfPBiBRrlw_ijc "></script>
+    <!-- Modernizr -->
+    <script src="../bower_components/modernizr/bin/modernizr"></script>
+    <!-- JS Source -->
+    <script src="/bower_components/jquery/dist/jquery.js"></script>
+    <script src="../bower_components/angular/angular.js"></script>
+    <script src="../bower_components/angular-route/angular-route.js"></script>
+    <script src="../bower_components/angularjs-geolocation/dist/angularjs-geolocation.min.js"></script>
+    <!-- Angular Source -->
+    <script src="js/app.js"></script>
+    <script src="js/addCtrl.js"></script>
+    <script src="js/gservice.js"></script>
+
+</head>
+<body ng-controller="addCtrl">
+    <div class="header">
+        <ul class="nav nav-pills pull-right">
+            <li active><a href="">Add Ground</a></li>
+        </ul>
+        <h3 class="text-muted">HotShotGo Ground map</h3>
+    </div>
+    <!-- Map and Side Panel -->
+    <div class="row content">
+        <!-- Google Map -->     
+            <div id="map"></div>
+        <!-- Side Panel -->
+        <div class="col-md-7">
+            <div class="panel panel-default">
+                <!-- Panel Title -->
+                <div class="panel-heading">
+                    <h2 class="panel-title text-center">Add ground by Admin<span class="glyphicon glyphicon-map-marker"></span></h2>
+                </div>
+                <!-- Panel Body -->
+                <div class="panel-body">
+                    <!-- Creates Form (novalidate disables HTML validation, Angular will control) -->
+                    <form name ="addForm" novalidate>
+                        <!-- Text Boxes and Other User Inputs. Note ng-model binds the values to Angular $scope -->
+                        <div class="form-group">
+                            <label for="username">Groundname <span class="badge">All fields required</span></label>
+                            <input type="text" class="form-control" id="groundname" placeholder="Enter the ground name" ng-model="formData.groundname" required>
+                        </div>
+                        <label class="radio control-label">Select Ground Type</label>
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="optionsRadios" id="radiocricket" value="cricket" ng-model="formData.groundtype">
+                                Cricket
+                            </label>
+                        </div>
+                        <div class="radio" required>
+                            <label>
+                                <input type="radio" name="optionsRadios" id="radiofootball" value="Football" ng-model="formData.groundtype">
+                                Football
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="optionsRadios" id="radiotennis" value="tennis" ng-model="formData.groundtype">
+                               Tennis
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="optionsRadios" id="radiovolleyball" value="vollyball" ng-model="formData.groundtype">
+                               VollyBall
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="optionsRadios" id="radioathelatic" value="athelatic" ng-model="formData.groundtype">
+                               Athelatic
+                            </label>
+                        </div>          
+                        <div class="form-group">
+                            <label for="contactnumber">Contact Number</label>
+                            <input type="number" class="form-control" id="contactnumber" placeholder="+91 Enter Your Phone number" ng-model="formData.contactnumber" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="language">Address</label>
+                            <input type="text" class="form-control" id="language" placeholder="Enter the Ground Address" ng-model="formData.favlang" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="latitude">Latitude</label>
+                            <input type="text" class="form-control" id="latitude" value="39.500" ng-model="formData.latitude" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="longitude">Longitude</label>
+                            <input type="text" class="form-control" id="longitude" value="-98.350" ng-model="formData.longitude" readonly>
+                        </div>
+                        <!-- Submit button. Note that its tied to createUser() function from addCtrl. Also note ng-disabled logic which prevents early submits.  -->
+                        <button type="submit" class="btn btn-danger btn-block" ng-click="createUser()" ng-disabled="addForm.$invalid">Submit</button>
+                    </form>
+                </div>
+            </div>
+    </div>
+    <hr/>
+    <!-- Footer -->
+   <footer class="footer">
+                <div class="footer-top">
+                           
+                    <div class="footer-top-inner">
+                    <div class="row flex">
+                        <div class="column width-2">
+                            <div class="footer-logo">
+                                <a href="index.html"><img src="images/hotshotlogo.png" alt="Logo" /></a>
+                            </div>
+                        </div>
+                    </div>     
+                    </div>
+                  
+                    
+                    <div class="row flex">
+                        
+                        <div class="column width-4">
+                            <div class="widget">
+<!--                          <h4 class="widget-title">CIX Software Inc.</h4>-->
+                                
+                                <p>Hotshot is all about sports. We create your world around sports &amp; activities. Experience sports like never before through us.</p>
+                            </div>
+                        </div>  
+                        <div class="column width-4 offset-2 left">
+                            <div class="widget">
+                                <ul>
+
+                                    
+                                    <li>
+                                        <a href="contact.html">CONTACT</a>
+                                    </li>
+
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="column width-2 left">
+                            <div class="widget">
+                                
+                                
+                                <h4 class="widget-title font-med">SOCIAL</h4>
+<!--
+                                <address class="mb-20">
+                                    Hyderabad, India<br>
+                                    
+                                </address>
+                                <p class="mb-10"><a href="mailto:#">contact@hotshotgo.com</a></p>
+-->
+                                <ul class="social-list list-horizontal">
+                                    <li><a href="https://www.facebook.com/hotshotgo" target="_blank"><span class="icon-facebook color-grey-ultralight medium color-hover-linkedin"></span></a></li>
+                                    <li><a href="https://twitter.com/hotshotgo" target="_blank"><span class="icon-twitter color-grey-ultralight medium color-hover-twitter"></span></a></li>
+                                    <li><a href="https://www.instagram.com/hotshotgo/?hl=en" target="_blank"><span class="icon-instagram color-grey-ultralight medium color-hover-instagram"></span></a></li>
+                                    <li><a href="https://www.youtube.com/channel/UCKTeE68XDwqb29sL08QLoew" target="_blank"><span class="icon-youtube color-grey-ultralight medium color-hover-youtube"></span></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="footer-bottom">
+                    <div class="row">
+                        <div class="column width-12">
+                            <p class="copyright">
+                                <span class="pull-left">&copy; 2017 Hotshot Sports, LLP. All Rights Reserved.</span> 
+                                <span class="pull-right"><a href="#">Terms of Use</a> | <a href="#">Privacy Policy</a> </span><br>
+<!--                                <a href="http://vectorx.co" target="_blank" class="color-white">Designed and Developed by VectorX</a>-->
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+</div>
+</body>
+</html>
